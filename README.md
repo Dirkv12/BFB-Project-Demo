@@ -1,5 +1,5 @@
 # BFB-Project-Semester Project
-Node.js and python needs to be installed for project to run and open browser.
+# Node.js and python needs to be installed for project to run and open browser.
 Architecture Diagram
 ![Image](https://github.com/user-attachments/assets/f730dec1-3a70-41c3-9bfe-2cc733a5c732)
 ERD
