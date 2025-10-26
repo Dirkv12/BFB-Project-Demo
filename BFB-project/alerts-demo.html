@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BFB Alerts Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    label { display: block; margin-top: 1em; }
+    select, button { margin-top: 0.5em; }
+    #alert-status { color: green; margin-top: 1em; }
+    #alerts-list { margin-top: 2em; }
+  </style>
+</head>
+<body>
+  <h1>BFB Alerts Demo</h1>
+  <form id="alert-form">
+    <label>Location:
+      <select id="alert-location"></select>
+    </label>
+    <label>Facility:
+      <select id="alert-facility"></select>
+    </label>
+    <label>Item:
+      <select id="alert-item"></select>
+    </label>
+    <button type="submit">Save Alert</button>
+    <div id="alert-status"></div>
+  </form>
+  <h2>Alerts</h2>
+  <ul id="alerts-list"></ul>
+  <script>
+    // Sample data for demo
+    window.BFB_SAMPLE = {
+      locations: ["North Wing", "South Wing", "East Wing", "West Wing"],
+      items: ["Fire Extinguisher", "First Aid Kit", "Defibrillator", "Emergency Exit"],
+      facilities: [
+        { id: "f1", name: "Main Hall", location: "North Wing" },
+        { id: "f2", name: "Conference Room", location: "North Wing" },
+        { id: "f3", name: "Cafeteria", location: "South Wing" },
+        { id: "f4", name: "Gym", location: "East Wing" },
+        { id: "f5", name: "Library", location: "West Wing" }
+      ]
+    };
+  </script>
+  <script src="alerts.js"></script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Relife – Sign in / Sign up</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css" />
+	<style>
+		.auth-container { max-width: 560px; margin: 6vh auto; }
+		.tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+		.tab { padding: 8px 12px; border: 1px solid var(--border); border-radius: 10px; background: rgba(255,255,255,0.03); cursor: pointer; color: var(--muted); }
+		.tab.active { background: linear-gradient(180deg, var(--brand), var(--brand-700)); color: #fff; border-color: transparent; }
+		.hidden { display: none; }
+		.topbar { position: fixed; right: 16px; top: 12px; z-index: 50; }
+	</style>
+</head>
+<body>
+	<div class="topbar"><button id="skip-login" class="button">Skip login</button></div>
+	<main class="container auth-container">
+		<h1 style="text-align:center;margin-bottom:8px;">Welcome to Relife</h1>
+		<p class="muted" style="text-align:center;margin-top:0;">Create an account or sign in to continue</p>
+
+		<div class="tabs" role="tablist">
+			<button id="tab-signup" class="tab active" role="tab" aria-controls="panel-signup" aria-selected="true">Sign up</button>
+			<button id="tab-login" class="tab" role="tab" aria-controls="panel-login" aria-selected="false">Log in</button>
+		</div>
+
+		<section id="panel-signup" role="tabpanel" aria-labelledby="tab-signup">
+			<form id="signup-form" class="card">
+				<label>
+					<span>Full name</span>
+					<input type="text" name="fullName" required />
+				</label>
+				<label>
+					<span>Date of birth</span>
+					<input type="date" name="dob" required />
+				</label>
+				<label>
+					<span>ID number</span>
+					<input type="text" name="idNumber" required />
+				</label>
+				<label>
+					<span>Gender</span>
+					<select name="gender" required>
+						<option value="" disabled selected>Select gender</option>
+						<option value="female">Female</option>
+						<option value="male">Male</option>
+						<option value="prefer_not">Prefer not to say</option>
+					</select>
+				</label>
+				<div class="grid-2">
+					<label>
+						<span>Email</span>
+						<input type="email" name="email" />
+					</label>
+					<label>
+						<span>Cell phone</span>
+						<input type="tel" name="cell" />
+					</label>
+				</div>
+				<label>
+					<span>Password</span>
+					<input type="password" name="password" minlength="6" required />
+				</label>
+				<p class="muted">Provide email or cell phone (at least one required). Password must be 6+ characters.</p>
+				<button type="submit" class="button primary">Create account</button>
+				<p id="signup-status" role="status" aria-live="polite"></p>
+			</form>
+		</section>
+
+		<section id="panel-login" role="tabpanel" aria-labelledby="tab-login" class="hidden">
+			<form id="login-form" class="card">
+				<label>
+					<span>ID number</span>
+					<input type="text" name="idNumber" required />
+				</label>
+				<label>
+					<span>Password</span>
+					<input type="password" name="password" required />
+				</label>
+				<button type="submit" class="button primary">Log in</button>
+				<p id="login-status" role="status" aria-live="polite"></p>
+			</form>
+		</section>
+	</main>
+
+	<script src="firebase-config.example.js"></script>
+	<script src="app.js"></script>
+	<script>
+		// Skip login functionality (keeps previous behaviour)
+		document.getElementById('skip-login').addEventListener('click', () => {
+			localStorage.setItem('bfb_authed', 'true');
+			location.href = 'index.html';
+		});
+
+		// Login form handling - posts to local backend at port 3000 and stores JWT
+		document.getElementById('login-form').addEventListener('submit', async (ev) => {
+			ev.preventDefault();
+			const form = ev.target;
+			const idNumber = form.elements['idNumber'].value.trim();
+			const password = form.elements['password'].value;
+			const statusEl = document.getElementById('login-status');
+			statusEl.textContent = 'Signing in...';
+			try {
+				const resp = await fetch('http://localhost:3000/api/login', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ username: idNumber, password })
+				});
+				if (!resp.ok) {
+					const err = await resp.json().catch(()=>({error:'Unable to login'}));
+					statusEl.textContent = err.error || 'Login failed';
+					return;
+				}
+				const data = await resp.json();
+				localStorage.setItem('bfb_authed', 'true');
+				localStorage.setItem('bfb_token', data.token);
+				localStorage.setItem('bfb_user', JSON.stringify(data.user));
+				location.href = 'index.html';
+			} catch (e) {
+				statusEl.textContent = 'Network error';
+			}
+		});
+
+		// Tabs behaviour for signup/login
+		document.getElementById('tab-signup').addEventListener('click', () => {
+			document.getElementById('panel-signup').classList.remove('hidden');
+			document.getElementById('panel-login').classList.add('hidden');
+			document.getElementById('tab-signup').classList.add('active');
+			document.getElementById('tab-login').classList.remove('active');
+		});
+		document.getElementById('tab-login').addEventListener('click', () => {
+			document.getElementById('panel-login').classList.remove('hidden');
+			document.getElementById('panel-signup').classList.add('hidden');
+			document.getElementById('tab-login').classList.add('active');
+			document.getElementById('tab-signup').classList.remove('active');
+		});
+	</script>
+</body>
+</html>

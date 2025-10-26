@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Relife</title>
+	<link rel="icon" href="assets/logo.svg" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css" />
+	<!-- Google Maps API -->
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoBbzoo_ZjD_zKJQKg_n6eI1_lRi1-ezU&libraries=places&callback=initMap"></script>
+</head>
+<body>
+	<header class="site-header">
+		<div class="container header-inner">
+			<a class="logo" href="#home">
+				<img src="assets/logo.svg" alt="Relife" class="logo-img" />
+			</a>
+			<nav class="nav" aria-label="Primary">
+				<button class="nav-toggle" aria-controls="primary-navigation" aria-expanded="false">☰</button>
+				<ul id="primary-navigation" class="nav-list">
+					<li><a href="#home"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z" fill="currentColor"/></svg>Home</a></li>
+					<li><a href="#info"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="currentColor"/></svg>Information</a></li>
+					<li><a href="#nearest"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg>Find Nearest</a></li>
+					<li><a href="#alerts"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V9l-2-3V5a4 4 0 1 0-8 0v1L6 9v3c0 6 6 10 6 10z" fill="currentColor"/></svg>Alerts</a></li>
+					<li><a href="#contact"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 8V7l-3 2-2-1-6 4-4-2-3 2v6h21v-8z" fill="currentColor"/></svg>Contact</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<main id="app" class="container">
+		<section id="home" class="route active" data-route="home">
+			<h1>Welcome to Relife</h1>
+			<div id="landing-goal" class="card" contenteditable="false" style="min-height:100px;">
+				<p><strong>Our mission:</strong> Make South Africa’s public healthcare more transparent and accessible by giving patients real-time visibility of medicines, beds, and services before they travel.</p>
+			</div>
+			<div class="cta-row center" style="margin-bottom:16px;">
+				<a class="button primary" href="#info">Find availability</a>
+				<a class="button" href="#nearest">Find nearest hospital</a>
+				<a class="button" href="#alerts">Create an alert</a>
+			</div>
+			<div class="card">
+				<h2 style="margin-top:0;">About Us</h2>
+				<p>Our mission is to make South Africa’s public healthcare system more transparent, accessible, and patient-friendly. Too often, patients travel long distances only to discover that the medicines or services they need are unavailable. This results in wasted time, unnecessary costs, and delayed treatment.</p>
+				<p>Our platform bridges this gap by providing real-time updates on the availability of medicines, hospital beds, and healthcare services across public facilities. By giving patients the ability to check availability before visiting, we aim to reduce overcrowding, improve patient satisfaction, and ensure timely access to care.</p>
+				<h3>Our Goal</h3>
+				<p>To empower patients with the information they need to make informed healthcare decisions while supporting healthcare workers and the Department of Health in building a more efficient, reliable, and trusted public healthcare system.</p>
+			</div>
+		</section>
+
+
+
+		<section id="info" class="route" data-route="info">
+			<h2>Hospital and Clinic Availability</h2>
+			<div class="grid-2">
+				<label>
+					<span>Location</span>
+					<select id="info-location"></select>
+				</label>
+				<label>
+					<span>Facility type</span>
+					<select id="info-type">
+						<option value="all" selected>All</option>
+						<option value="hospital">Hospital</option>
+						<option value="clinic">Clinic</option>
+					</select>
+				</label>
+			</div>
+			<label>
+				<span>Healthcare location</span>
+				<select id="info-facility"></select>
+			</label>
+			<div id="info-output" class="card" style="margin-top:12px;"></div>
+		</section>
+
+		<section id="nearest" class="route" data-route="nearest">
+			<h2>Find Nearest Hospital</h2>
+			<div class="card">
+				<p class="muted">Get your current location to find the closest public hospitals in Gauteng with available services.</p>
+				<div class="cta-row center" style="margin-bottom:16px;">
+					<button id="get-location-btn" class="button primary">📍 Get My Location</button>
+				</div>
+				<div id="location-status" role="status" aria-live="polite"></div>
+			</div>
+			
+			<div id="nearest-results" style="display:none;">
+				<h3>Nearest Public Hospitals</h3>
+				<div id="hospitals-list" class="card"></div>
+				<div id="map-container" style="height:400px; margin-top:16px; border-radius:16px; overflow:hidden;">
+					<div id="map" style="height:100%;"></div>
+				</div>
+			</div>
+		</section>
+
+		<section id="alerts" class="route" data-route="alerts">
+			<h2>Bookings / Availability Alerts</h2>
+			<form id="alert-form" class="card">
+				<div class="grid-2">
+					<label>
+						<span>Location</span>
+						<select id="alert-location" name="location"></select>
+					</label>
+					<label>
+						<span>Healthcare location</span>
+						<select id="alert-facility" name="facility"></select>
+					</label>
+				</div>
+				<label>
+					<span>Service or medicine</span>
+					<select id="alert-item" name="item"></select>
+				</label>
+				<button type="submit" class="button primary">Save alert</button>
+				<p id="alert-status" role="status" aria-live="polite"></p>
+			</form>
+			<div class="card" style="margin-top:12px;">
+				<h3 style="margin-top:0;">Your alerts</h3>
+				<ul id="alerts-list"></ul>
+			</div>
+		</section>
+
+		<section id="about" class="route" data-route="about">
+			<h2>About</h2>
+			<h3>Our mission</h3>
+			<p>Our mission is to make South Africa’s public healthcare system more transparent, accessible, and patient-friendly. Too often, patients travel long distances only to discover that the medicines or services they need are unavailable. This results in wasted time, unnecessary costs, and delayed treatment.</p>
+			<p>Our platform bridges this gap by providing real-time updates on the availability of medicines, hospital beds, and healthcare services across public facilities. By giving patients the ability to check availability before visiting, we aim to reduce overcrowding, improve patient satisfaction, and ensure timely access to care.</p>
+			<h3>Our goal</h3>
+			<p>To empower patients with the information they need to make informed healthcare decisions while supporting healthcare workers and the Department of Health in building a more efficient, reliable, and trusted public healthcare system.</p>
+		</section>
+
+		<section id="contact" class="route" data-route="contact">
+			<h2>Contact</h2>
+			<form id="contact-form" class="card">
+				<label>
+					<span>Name</span>
+					<input type="text" name="name" required />
+				</label>
+				<label>
+					<span>Email</span>
+					<input type="email" name="email" />
+				</label>
+				<label>
+					<span>Message</span>
+					<textarea name="message" rows="4" required></textarea>
+				</label>
+				<button type="submit" class="button primary">Send</button>
+				<p id="contact-status" role="status" aria-live="polite"></p>
+			</form>
+		</section>
+	</main>
+
+	<footer class="site-footer">
+		<div class="container">
+			<p>© <span id="year"></span> Relife. All rights reserved.</p>
+		</div>
+	</footer>
+
+	<script src="app.js"></script>
+	<script src="firebase-config.example.js"></script>
+	<script src="sampleData.js"></script>
+	<script src="info.js"></script>
+	<script src="alerts.js"></script>
+	<script src="maps.js"></script>
+
+</body>
+</html>
