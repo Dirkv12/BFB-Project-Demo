@@ -5,7 +5,11 @@ Sebastian van Schoor - u2358971<br>
 Daniel du Toit - u05141819<br>
 Mia Linde - u22508172<br>
 # Important information and instructions
- Node.js and python needs to be installed for project to run and open browser and project must be run from dev-start.ps1 in VS Code.<br> Use skip login button on home page.
+ Node.js and python needs to be installed for project to run and open browser and project must be run from dev-start.ps1 in VS Code.<br> 
+ The Poweshell, Chrome Debugger, CSS Peak, JavaScript, Run in Powershell and the Live Server extensions are required.<br>
+ Use skip login button on home page.<br>
+ 
+ 
 # Architecture Diagram
 ![Image](https://github.com/user-attachments/assets/d289abc7-6a48-486d-ab00-2c97f76551ba)
 # ERD
