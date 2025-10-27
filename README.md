@@ -1,6 +1,6 @@
 # BFB321 Semester Web Application Project
 # Group members
-Dirk Visser - u23570297
+Dirk Visser - u23570297<br>
 Sebastian van Schoor - u2358971
 Daniel du Toit - u05141819
 Mia Linde - u22508172
