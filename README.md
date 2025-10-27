@@ -1,4 +1,9 @@
-# BFB-Project-Semester Project
+# BFB321 Semester Web Application Project
+# Group members
+Dirk Visser - u23570297
+Sebastian van Schoor - u2358971
+Daniel du Toit - u05141819
+Mia Linde - u22508172
 # Important information
  Node.js and python needs to be installed for project to run and open browser and project must be run from dev-start.ps1 in VS Code. Use skip login button on home page.
 # Architecture Diagram
